@@ -1,0 +1,99 @@
+﻿
+@model RegisterProject.Data.Domains.Employee
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = null;
+}
+<style>
+    .avatar {
+        vertical-align: middle;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+    }
+</style>
+<div class="row">
+    <div class="col-md-12">
+       
+        <form asp-action="AddOrEdit" asp-route-id="@Model.Id" onsubmit="" autocomplete="off">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" id="name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Surname" class="control-label"></label>
+                <input asp-for="Surname" class="form-control" id="surname" />
+                <span asp-validation-for="Surname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BirthDay" class="control-label"></label>
+                <input asp-for="BirthDay" class="form-control" id="birthday" />
+                <span asp-validation-for="BirthDay" class="text-danger"></span>
+            </div>
+           
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" id="description" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MediaLibrary.ProfilePictureFile" class="control-label"></label>
+                <input asp-for="MediaLibrary.ProfilePictureFile" accept="image/*" id="profilepicturefile" onchange="UploadFile(this.id)" type="file"/>
+                <span asp-validation-for="MediaLibrary.ProfilePictureFile" class="text-danger"></span>
+             @*   <img src="~/Media Library/@Model.MediaLibrary.ReorganizedPictureName" alt="re" />*@
+            </div>
+            @{
+                IList<SelectListItem> countries = ViewBag.Countries;
+                IList<SelectListItem> cities = ViewBag.Cities;
+                IList<SelectListItem> schools = ViewBag.Schools;
+            }
+
+            @* <div class="form-group">
+            <label asp-for="MediaId" class="control-label"></label>
+            <select asp-for="MediaId" class ="form-control" asp-items="ViewBag.MediaId"></select>
+            </div>*@
+            <div class="form-group">
+                <label asp-for="GeographicLibrary.Tanim" class="control-label"></label>
+                <select id="countries" onchange="setCities()" asp-for="GeographicLibrary.Id" asp-items="@countries"></select>
+
+            </div>
+            <div class="form-group">
+                <label asp-for="GeographicLibrary.Tanim" class="control-label"></label>
+                <select id="cities" name="CityId" asp-for="GeographicLibrary.Id" asp-items="@cities"></select>
+
+            </div>
+
+            <div id="okulTekrar">
+                <div class="form-group" id="okulDropDownDivId0">
+
+                    <label>Okul Türü</label><br />
+                    <input class="input-block-level" type="text" name="newfield" id="graduatedSchoolName0" placeholder="New School">
+                    <select id="schoolId0">
+                    </select>
+                    <input type="button" value="+" id="btnAddSchool" onclick="getOkul()" class="btn btn-group" />
+                    <input type="button" value="-" id="btnRemoveSchool" onclick="removeSchool()" class="btn btn-group" />
+                    <input type="button" id="loadSchool" onclick="a()" />
+                </div>
+            </div>
+            
+
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary btn-block" id="btnSend" onclick="sendSchoolData();" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
+    <script>
+        GetOkulTurleri();
+    </script>
